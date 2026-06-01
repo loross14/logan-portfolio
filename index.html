@@ -318,7 +318,7 @@
       <span class="item"><span class="d"></span> <a href="mailto:logancross@live.com">logancross@live.com</a></span>
     </div>
     <div class="cli-hint" id="cliHint">
-      <kbd>`</kbd> open a terminal
+      <kbd>`</kbd> open a terminal&nbsp;&nbsp;·&nbsp;&nbsp;<a href="/body" style="color:var(--muted);text-decoration:none;border-bottom:1px solid var(--ghost)">the body ↗</a>
     </div>
   </section>
 
@@ -461,6 +461,7 @@
         addTerminalLine('  open <id>    open a book or repo');
         addTerminalLine('  findings     the cross-domain threads');
         addTerminalLine('  links <id>   what a finding connects');
+        addTerminalLine('  read         open the body — the findings, glossed');
         addTerminalLine('', 'muted');
         addTerminalLine('  theme        toggle the gold accent');
         addTerminalLine('  clear        wipe the screen');
@@ -508,6 +509,11 @@
       'clear': function () {
         terminalBody.innerHTML = '';
         addTerminalLine('Terminal cleared.', 'green');
+      },
+      'read': function () {
+        addTerminalLine('Opening the body — the findings, glossed.', 'green');
+        addTerminalLine('the same κ in whales and tumors · a treasury in a name · fifteen scripts to their honest ceiling.', 'muted');
+        setTimeout(function () { window.location.href = '/body'; }, 600);
       },
       'exit': function () { toggleTerminal(); },
       'secret': function () {
@@ -613,6 +619,17 @@
       konamiIndex = 0;
     }
   });
+
+  /* ===== Deep links from the body narrative: /?open=<id> or /?cmd=<command> ===== */
+  (function () {
+    var p = new URLSearchParams(window.location.search);
+    var open = p.get('open'), cmd = p.get('cmd');
+    if (!open && !cmd) return;
+    if (!terminalOpen) toggleTerminal();
+    setTimeout(function () {
+      processCommand(open ? ('open ' + open.toLowerCase()) : cmd.toLowerCase());
+    }, 250);
+  })();
 </script>
 </body>
 </html>

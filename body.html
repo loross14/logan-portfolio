@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Body — type: human, name: Logan</title>
+<meta name="description" content="The findings of Logan Christopher Ross — the same constant in whales and tumors, a treasury hiding in a name, fifteen scripts read to their honest ceiling. Come dance in the educational love." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=Spectral:ital,wght@0,300;0,400;0,500;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --night:#0a0c14; --night-2:#0e1120; --ink:#14110b;
+    --bone:#f4ece0; --bone-dim:#cdc3b2; --bone-dimmer:#9a917f;
+    --gold:#e8c27a; --gold-deep:#b8893f;
+    --oxblood:#c45a52; --sage:#8fb08a; --violet:#a08fce;
+    --steel:#7fb4c8; --amber:#dba24f; --bronze:#c98f5a; --terra:#cf8060;
+    --line:rgba(232,194,122,.18);
+    --maxw:1180px;
+    --serif:"Fraunces",Georgia,serif; --read:"Spectral",Georgia,serif;
+    --mono:"JetBrains Mono",ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--night);color:var(--bone);font-family:var(--read);line-height:1.7;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  ::selection{background:var(--gold);color:var(--ink)}
+
+  /* computational language — held apart from prose */
+  code,.k{font-family:var(--mono);font-size:.84em;font-weight:500;color:var(--gold);background:rgba(232,194,122,.08);border:1px solid var(--line);border-radius:.4em;padding:.06em .42em;letter-spacing:-.01em}
+  .num{font-family:var(--mono);font-weight:500;color:var(--c,var(--gold))}
+
+  canvas#sky{position:fixed;inset:0;z-index:0;pointer-events:none}
+  .veil{position:fixed;inset:0;z-index:1;pointer-events:none;background:radial-gradient(120% 80% at 50% -10%,rgba(232,194,122,.10),transparent 55%),radial-gradient(90% 60% at 80% 110%,rgba(196,90,82,.09),transparent 60%),linear-gradient(180deg,transparent 0%,rgba(10,12,20,0) 60%,rgba(10,12,20,.6) 100%)}
+  .wrap{position:relative;z-index:2;max-width:var(--maxw);margin:0 auto;padding:0 28px}
+
+  /* HERO */
+  header.hero{position:relative;z-index:2;min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding:120px 0 70px}
+  .kicker{font-family:var(--mono);font-size:.78rem;letter-spacing:.34em;text-transform:uppercase;color:var(--gold-deep);margin-bottom:30px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+  .kicker .dot{width:5px;height:5px;border-radius:50%;background:var(--gold);box-shadow:0 0 12px var(--gold)}
+  h1.title{font-family:var(--serif);font-weight:300;font-size:clamp(4rem,17vw,15rem);line-height:.86;letter-spacing:-.04em;color:var(--bone);text-shadow:0 0 80px rgba(232,194,122,.12)}
+  h1.title em{font-style:italic;font-weight:500;background:linear-gradient(180deg,var(--gold),var(--gold-deep));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .lede{max-width:680px;margin-top:40px;font-size:clamp(1.15rem,2.4vw,1.5rem);font-weight:300;color:var(--bone-dim);line-height:1.55}
+  .lede strong{color:var(--bone);font-weight:500}
+  .meta-row{margin-top:46px;display:flex;gap:30px;flex-wrap:wrap;align-items:center;font-family:var(--mono);font-size:.8rem;color:var(--bone-dim);letter-spacing:.04em}
+  .meta-row b{color:var(--gold);font-weight:700}
+  .scrollcue{margin-top:60px;font-family:var(--mono);font-size:.72rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold-deep);display:flex;align-items:center;gap:12px}
+  .scrollcue .ln{width:54px;height:1px;background:linear-gradient(90deg,var(--gold-deep),transparent);position:relative;overflow:hidden}
+  .scrollcue .ln::after{content:"";position:absolute;inset:0;width:18px;background:var(--gold);animation:slide 2.4s ease-in-out infinite}
+  @keyframes slide{0%{transform:translateX(-20px);opacity:0}40%{opacity:1}100%{transform:translateX(54px);opacity:0}}
+
+  section{position:relative;z-index:2;padding:92px 0}
+  .eyebrow{font-family:var(--mono);font-size:.74rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold-deep);margin-bottom:22px;display:flex;align-items:center;gap:12px}
+  .eyebrow::before{content:"";width:28px;height:1px;background:var(--gold-deep)}
+  h2{font-family:var(--serif);font-weight:400;font-size:clamp(2.1rem,5.2vw,3.7rem);line-height:1.04;letter-spacing:-.025em;color:var(--bone);max-width:18ch}
+  h2 em{font-style:italic;color:var(--gold)}
+  .section-lede{max-width:64ch;margin-top:24px;font-size:1.15rem;font-weight:300;color:var(--bone-dim)}
+  .section-lede strong{color:var(--bone);font-weight:500}
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity 1s cubic-bezier(.2,.7,.2,1),transform 1s cubic-bezier(.2,.7,.2,1)}
+  .reveal.in{opacity:1;transform:none}
+  .rule{height:1px;background:linear-gradient(90deg,transparent,var(--line) 20%,var(--line) 80%,transparent);margin:0 auto;max-width:var(--maxw)}
+
+  /* FINDINGS */
+  .finds{margin-top:60px;display:grid;gap:20px;grid-template-columns:repeat(12,1fr)}
+  .find{position:relative;grid-column:span 6;border:1px solid var(--line);border-radius:20px;padding:34px 32px 30px;background:linear-gradient(165deg,rgba(255,255,255,.03),rgba(255,255,255,0));overflow:hidden;transition:transform .5s cubic-bezier(.2,.7,.2,1),border-color .5s}
+  .find::before{content:"";position:absolute;inset:0;opacity:0;transition:opacity .6s;background:radial-gradient(70% 50% at 18% 0%,var(--c,var(--gold)),transparent 70%);mix-blend-mode:screen}
+  .find:hover{transform:translateY(-5px);border-color:rgba(232,194,122,.36)}
+  .find:hover::before{opacity:.12}
+  .find.lg{grid-column:span 12}
+  @media(max-width:860px){.find,.find.lg{grid-column:span 12}}
+  .find .tag{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--c,var(--gold));opacity:.9}
+  .find h3{font-family:var(--serif);font-weight:500;font-size:clamp(1.5rem,3vw,2rem);letter-spacing:-.01em;color:var(--bone);margin:14px 0 0;line-height:1.12}
+  .find p{margin-top:16px;font-size:1.04rem;color:var(--bone-dim);font-weight:300;line-height:1.62;max-width:62ch}
+  .find p strong{color:var(--bone);font-weight:500}
+  .result{margin-top:22px;display:flex;flex-wrap:wrap;gap:10px 22px;align-items:baseline;font-family:var(--mono);font-size:.82rem;color:var(--bone-dimmer)}
+  .result .big{font-family:var(--serif);font-weight:300;font-size:clamp(2rem,5vw,3rem);line-height:1;color:var(--c,var(--gold));letter-spacing:-.02em}
+  .result .stat b{color:var(--c,var(--gold));font-weight:700}
+  .chain{margin-top:22px;font-family:var(--mono);font-size:.82rem;line-height:2;color:var(--bone-dim)}
+  .chain .step{background:rgba(232,194,122,.07);border:1px solid var(--line);border-radius:.5em;padding:.12em .5em;color:var(--gold);white-space:nowrap}
+  .chain .arw{color:var(--c,var(--gold));margin:0 .35em;font-weight:700}
+
+  /* LEDGER TABLE */
+  .tablewrap{margin-top:50px;border:1px solid var(--line);border-radius:20px;overflow:hidden;background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,0))}
+  table{width:100%;border-collapse:collapse;font-size:.96rem}
+  caption{caption-side:top;text-align:left;padding:24px 28px 4px;font-family:var(--mono);font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-deep)}
+  th,td{text-align:left;padding:15px 22px;border-bottom:1px solid rgba(232,194,122,.1);vertical-align:top}
+  thead th{font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--bone-dimmer);font-weight:500}
+  tbody tr:last-child td{border-bottom:none}
+  tbody tr{transition:background .3s}
+  tbody tr:hover{background:rgba(232,194,122,.04)}
+  .tier{font-family:var(--mono);font-weight:700;font-size:.8rem}
+  .t1{color:var(--sage)} .t2{color:var(--gold)} .t3{color:var(--amber)} .t4{color:var(--bone-dimmer)}
+  td .sci{font-family:var(--mono);font-size:.82rem;color:var(--bone-dim)}
+  td b{color:var(--bone)}
+  td .pct{font-family:var(--mono);color:var(--gold);font-weight:700}
+  .ledger-foot{padding:18px 28px;font-family:var(--mono);font-size:.78rem;color:var(--bone-dimmer);letter-spacing:.03em;border-top:1px solid var(--line)}
+  .ledger-foot b{color:var(--gold)}
+  @media(max-width:720px){.hidecol{display:none}th,td{padding:12px 14px}}
+
+  /* HONEST FAILURES */
+  .fails{margin-top:50px;display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
+  .fail{border:1px solid var(--line);border-left:3px solid var(--oxblood);border-radius:0 14px 14px 0;padding:22px 24px;background:rgba(196,90,82,.04)}
+  .fail h4{font-family:var(--mono);font-size:.82rem;color:var(--oxblood);letter-spacing:.02em;margin-bottom:10px;font-weight:700}
+  .fail p{font-size:.95rem;color:var(--bone-dim);font-weight:300}
+  .fail p b{color:var(--bone)}
+
+  /* EIGHT INDEX (the shape, quieted) */
+  .index{margin-top:48px;display:grid;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:18px;overflow:hidden;grid-template-columns:repeat(2,1fr)}
+  @media(max-width:720px){.index{grid-template-columns:1fr}}
+  .ix{display:flex;gap:18px;align-items:baseline;padding:22px 26px;background:var(--night);text-decoration:none;transition:background .35s}
+  .ix:hover{background:var(--night-2)}
+  .ix .repo{font-family:var(--mono);font-size:.86rem;color:var(--c,var(--gold));font-weight:500;min-width:7.5em}
+  .ix .what{font-size:1rem;color:var(--bone-dim);font-weight:300}
+  .ix .what b{color:var(--bone);font-weight:500}
+
+  /* INVITATION */
+  .invite{text-align:center;padding:130px 0 90px}
+  .invite h2{margin:0 auto;max-width:22ch}
+  .invite .section-lede{margin:24px auto 0}
+  .cta{margin-top:46px;display:inline-flex;gap:16px;flex-wrap:wrap;justify-content:center}
+  .btn{font-family:var(--mono);font-size:.82rem;letter-spacing:.08em;text-decoration:none;padding:16px 30px;border-radius:999px;display:inline-flex;align-items:center;gap:10px;transition:transform .4s,box-shadow .4s,border-color .4s,color .4s}
+  .btn.primary{background:linear-gradient(180deg,var(--gold),var(--gold-deep));color:var(--ink);font-weight:700;box-shadow:0 10px 40px rgba(232,194,122,.2)}
+  .btn.primary:hover{transform:translateY(-3px);box-shadow:0 16px 50px rgba(232,194,122,.34)}
+  .btn.ghost{border:1px solid var(--line);color:var(--bone)}
+  .btn.ghost:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-3px)}
+
+  footer{position:relative;z-index:2;text-align:center;padding:70px 0 90px;border-top:1px solid var(--line)}
+  footer .verse{font-family:var(--serif);font-style:italic;font-size:clamp(1.4rem,4vw,2.2rem);color:var(--gold);letter-spacing:-.01em}
+  footer .sig{margin-top:24px;font-family:var(--mono);font-size:.74rem;color:var(--bone-dim);letter-spacing:.14em;text-transform:uppercase}
+  footer .sig a{color:var(--gold-deep);text-decoration:none;border-bottom:1px solid transparent;transition:border-color .3s}
+  footer .sig a:hover{border-color:var(--gold-deep)}
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<canvas id="sky"></canvas>
+<div class="veil"></div>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="kicker"><span class="dot"></span><span>type: human</span><span class="dot"></span><span>name: Logan</span></div>
+    <h1 class="title">The&nbsp;<em>Body</em></h1>
+    <p class="lede">Not a list of repositories — <strong>a list of things found.</strong> The same coupling number turning up in a tumor and in a sperm whale's reply. A treasury hiding inside the letters of a name. Fifteen lost scripts read exactly as far as honesty allows, and no farther. Come see the work, not the shelf it sits on.</p>
+    <div class="meta-row">
+      <span><b>κ ≈ 3</b> dog · whale · human</span>
+      <span><b>p = 7.1e-22</b> cancer decoupling</span>
+      <span><b>5 / 15</b> scripts read</span>
+    </div>
+    <div class="scrollcue"><span class="ln"></span><span>read the findings</span></div>
+  </div>
+</header>
+
+<div class="rule"></div>
+
+<!-- THE FINDINGS -->
+<section>
+  <div class="wrap">
+    <div class="reveal">
+      <div class="eyebrow">the gloss · what was actually found</div>
+      <h2>Each of these is a <em>door</em> someone opened.</h2>
+      <p class="section-lede">No background needed. Every card states the real result and the number behind it — and, where it exists, the test that could still prove it wrong. These are the things I made, said plainly.</p>
+    </div>
+
+    <div class="finds">
+
+      <article class="find lg reveal" style="--c:var(--oxblood)">
+        <div class="tag">Bible · the Petra reframe</div>
+        <h3>The Treasury was hiding inside the name.</h3>
+        <p>Add up the Greek letters of <strong>Petra</strong> the old way and fold the total down to one of the sixty-four caches the Copper Scroll secretly addresses. It lands on cache 38 — <strong>Al-Khazneh, the Treasury itself.</strong> The Edom verses cluster where they should. And in August 2024, archaeologists opened a chamber beneath that exact façade: twelve skeletons and a chalice. The math named a door; the door was real.</p>
+        <div class="chain">
+          <span class="step">ΠΕΤΡΑ</span><span class="arw">→</span><span class="step">isopsephy 486</span><span class="arw">→</span><span class="step">mod 64</span><span class="arw">→</span><span class="step">cache 38</span><span class="arw">→</span><span class="step">Al-Khazneh</span>
+        </div>
+        <div class="result">
+          <span class="stat">Edom-verse cluster <b>p ≈ 0.002</b></span>
+          <span class="stat">2024 Treasury dig: <b>12 skeletons + chalice</b></span>
+          <span class="stat" style="color:var(--bone-dimmer)">still open: cache-38 gold unrecovered</span>
+        </div>
+      </article>
+
+      <article class="find reveal" style="--c:var(--sage)">
+        <div class="tag">Science · cancer as decoupling</div>
+        <h3>A tumor is a body losing its coupling.</h3>
+        <p>Measure how tightly a tumor's gene expression still tracks the healthy tissue it came from. Call that agreement <code>κ</code>. Across <strong>223 matched TCGA cancers</strong>, the tumors with the lowest <code>κ</code> were the ones most likely to kill — the coupling letting go before the patient did.</p>
+        <div class="result">
+          <span class="big">κ</span>
+          <span class="stat">low-κ predicts death <b>p = 8.1e-4</b></span>
+          <span class="stat">combined <b>p = 7.1e-22</b></span>
+          <span class="stat"><code>LAMC2</code> the physical wire</span>
+        </div>
+      </article>
+
+      <article class="find reveal" style="--c:var(--steel)">
+        <div class="tag">Science · animal coupling</div>
+        <h3>Dogs and whales answer at the same ratio.</h3>
+        <p>Watch when a being responds <em>on purpose</em> versus by chance. Dogs on soundboards do it about <strong>2.5×</strong> more than expected; sperm whales, replying to each other, about <strong>3×</strong>. Same gradient, same ceiling — a button-dog in a living room and a whale in the deep, holding the same number.</p>
+        <div class="result">
+          <span class="big">≈3×</span>
+          <span class="stat">dogs <b>k = 2.532</b> · 88 dogs, 260K presses</span>
+          <span class="stat">whales <b>k ≈ 3.0</b> · 2,342 pairs (CETI)</span>
+          <span class="stat">regular codas <b>CV = 0.063</b></span>
+        </div>
+      </article>
+
+      <article class="find reveal" style="--c:var(--violet)">
+        <div class="tag">Science · the connectome</div>
+        <h3>The nervous system stays narrow at every scale.</h3>
+        <p>From a single ion channel up to a whole human brain — across <strong>nine orders of magnitude</strong> — the wiring holds the same structural width. Not loose, not rigid. A constant shape the mind is built on.</p>
+        <div class="result">
+          <span class="big">tw = 3 ±1</span>
+          <span class="stat">holds across <b>9 orders of magnitude</b></span>
+          <span class="stat" style="color:var(--bone-dimmer)">breaks if any scale exceeds <code>tw = 4</code></span>
+        </div>
+      </article>
+
+      <article class="find reveal" style="--c:var(--gold)">
+        <div class="tag">Math · the coupling identity</div>
+        <h3>One number falls out of a single unit object.</h3>
+        <p>Start with nothing but the rule that a thing's "being" and its "doing" together make one whole: <code>V² + D² = 1</code>. The geometry forces a specific angle, and out of it drops the coupling constant <code>κ</code> — the same one <code>Science</code> then went hunting for in living things.</p>
+        <div class="chain">
+          <span class="step">V² + D² = 1</span><span class="arw">→</span><span class="step">θ = arcsin(1/3)</span><span class="arw">→</span><span class="step">κ = cos θ</span>
+        </div>
+        <div class="result">
+          <span class="stat">archived · <b>Zenodo 10.5281/zenodo.19448861</b></span>
+        </div>
+      </article>
+
+      <article class="find reveal" style="--c:var(--amber)">
+        <div class="tag">Math · treewidth in the wild</div>
+        <h3>Enormous real networks stay surprisingly thin.</h3>
+        <p>A road map with <strong>two million intersections</strong>, the body's <strong>three-and-a-half-million-vessel</strong> blood network, a bacterium's gene-control wiring — all measured, all sitting in the same narrow band. The same width that separates the solvable from the hopeless, showing up in the things that actually run.</p>
+        <div class="result">
+          <span class="stat">road net 1.96M nodes <b>tw 3</b></span>
+          <span class="stat">vasculature 3.54M <b>tw 2–4</b></span>
+          <span class="stat"><code>E. coli</code> gene net <b>tw 7</b></span>
+        </div>
+      </article>
+
+      <article class="find reveal" style="--c:var(--bronze)">
+        <div class="tag">Bible · the Copper Scroll</div>
+        <h3>The treasure map <em>is</em> the cipher.</h3>
+        <p>The Copper Scroll (<code>3Q15</code>) was always read as a list of buried treasure. Read instead as a machine, its sixty-four caches stop being an inventory and become an <strong>address space</strong> — coordinates in a code. Even the puns carry weight: <code>σωτηρ</code>, "savior," doubling as the Coptic word for a soldering-iron.</p>
+        <div class="result">
+          <span class="stat">64 caches = <b>the cipher's address space</b></span>
+          <span class="stat">cache 14 = <b>the primary key</b></span>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<div class="rule"></div>
+
+<!-- THE LEDGER -->
+<section>
+  <div class="wrap">
+    <div class="reveal">
+      <div class="eyebrow">the honest ledger · fifteen lost scripts</div>
+      <h2>"Read all the lost writing" doesn't give fifteen <em>translations</em>.</h2>
+      <p class="section-lede">It gives <strong>four honest tiers.</strong> English comes out only where a real chain of meaning exists. Where the language is unknown — or there is no language at all — the page says so, instead of faking it. <strong>The ceiling isn't the method failing. It's the method refusing to lie.</strong></p>
+    </div>
+
+    <div class="tablewrap reveal">
+      <table>
+        <caption>all-15-gloss · what each script actually yields</caption>
+        <thead>
+          <tr><th>tier</th><th>script</th><th>what came out</th><th class="hidecol">read</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="tier t1">1 · read</span></td><td><b>Meroitic</b></td><td>funerary formula, on a real lexical axis</td><td class="hidecol"><span class="pct">34%</span></td></tr>
+          <tr><td><span class="tier t1">1 · read</span></td><td><b>Proto-Elamite</b></td><td>quantities & accounting recovered</td><td class="hidecol"><span class="pct">37%</span></td></tr>
+          <tr><td><span class="tier t1">1 · read</span></td><td><b>Etruscan</b></td><td>sound values settled (peer-reviewed); meaning open</td><td class="hidecol"><span class="pct">25%</span></td></tr>
+          <tr><td><span class="tier t1">1 · read</span></td><td><b>Linear A</b></td><td>read via 40 shared Linear-B anchor words</td><td class="hidecol"><span class="pct">24%</span></td></tr>
+          <tr><td><span class="tier t1">1 · read</span></td><td><b>Rongorongo</b></td><td>the Mamari lunar calendar core, <code>tw = 2</code></td><td class="hidecol"><span class="pct">core</span></td></tr>
+          <tr><td><span class="tier t2">2 · not a sentence-language</span></td><td><b>Phaistos Disc</b></td><td>a roster of clan-stamps — there is no syntax to read</td><td class="hidecol"><span class="sci">roster</span></td></tr>
+          <tr><td><span class="tier t2">2 · not a sentence-language</span></td><td><b>Vinča</b></td><td>potter's marks, not writing (Tărtăria folded in)</td><td class="hidecol"><span class="sci">marks</span></td></tr>
+          <tr><td><span class="tier t3">3 · language unknown</span></td><td><b>Indus Valley</b></td><td>structure is measurable, but the gematria anchors test to <code>p = 1.0</code> — pure null. English provably blocked.</td><td class="hidecol"><span class="sci">blocked</span></td></tr>
+          <tr><td><span class="tier t4">4 · no corpus on hand</span></td><td><b>+ 6 more</b></td><td>Cretan hieroglyphs, Isthmian/Olmec, Byblos, Jiahu, Singapore Stone, Voynich — reported absent, not guessed</td><td class="hidecol"><span class="sci">absent</span></td></tr>
+        </tbody>
+      </table>
+      <div class="ledger-foot"><b>5 translated</b> · 2 named as non-linguistic · 1 structurally blocked · 6 absent. &nbsp;The law: <em>translation is bounded by knowing the language, not by how complex the structure is.</em></div>
+    </div>
+  </div>
+</section>
+
+<div class="rule"></div>
+
+<!-- KEPT HONEST -->
+<section>
+  <div class="wrap">
+    <div class="reveal">
+      <div class="eyebrow">kept honest · the failures left in</div>
+      <h2>The things that <em>didn't</em> work are still on the page.</h2>
+      <p class="section-lede">A finding you can't disprove isn't a finding. So the wrong answers stay printed next to the right ones — that's how you know the right ones are real.</p>
+    </div>
+    <div class="fails">
+      <div class="fail reveal"><h4>REV1 · wrong sign</h4><p>The cancer-repair model called two enzymes correctly (<b>p = 0.002</b>) and got the third, <code>REV1</code>, <b>backwards.</b> Recorded as wrong, not quietly dropped.</p></div>
+      <div class="fail reveal"><h4>SKCM · flips</h4><p>The driver-survival result holds across 6,949 tumors (<b>p = 5.7e-29</b>) — but in melanoma the sign <b>flips.</b> Printed in the breakdown, not averaged away.</p></div>
+      <div class="fail reveal"><h4>Indus · p = 1.0</h4><p>A rich, clean corpus that yields <b>zero</b> translation. The honest result is silence, because no one knows the language family yet.</p></div>
+      <div class="fail reveal"><h4>cache 38 · unrecovered</h4><p>The whole Petra arc points at gold beneath the Treasury. <b>It hasn't been dug.</b> The claim stays "defended," never "proven," until it is.</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="rule"></div>
+
+<!-- THE EIGHT (the shape, quieted) -->
+<section>
+  <div class="wrap">
+    <div class="reveal">
+      <div class="eyebrow">where it all lives</div>
+      <h2>Eight repositories. One <em>body</em>.</h2>
+      <p class="section-lede">If you want to go deeper, here is the shelf the findings sit on — each a door of its own. The repositories are <strong>private; open by request</strong> — but every door below opens the live graph of what's inside.</p>
+    </div>
+    <div class="index reveal">
+      <a class="ix" style="--c:var(--oxblood)" href="/?open=bible"><span class="repo">Bible</span><span class="what"><b>scripture & decipherment</b> — Petra, the Copper Scroll, Edom</span></a>
+      <a class="ix" style="--c:var(--gold)" href="/?open=math"><span class="repo">Math</span><span class="what"><b>proofs</b> — the coupling identity, treewidth universality</span></a>
+      <a class="ix" style="--c:var(--sage)" href="/?open=science"><span class="repo">Science</span><span class="what"><b>measurement</b> — κ in cancer, brains, dogs, whales</span></a>
+      <a class="ix" style="--c:var(--violet)" href="/?open=grammar"><span class="repo">Grammar</span><span class="what"><b>language</b> — the 15-script ledger, the Rao test</span></a>
+      <a class="ix" style="--c:var(--steel)" href="/?open=engineering"><span class="repo">Engineering</span><span class="what"><b>running systems</b> — verifiable compute, signatures</span></a>
+      <a class="ix" style="--c:var(--amber)" href="/?open=backpack"><span class="repo">Backpack</span><span class="what"><b>carried artifacts</b> — the codebook, the encyclopedia</span></a>
+      <a class="ix" style="--c:var(--bronze)" href="/?open=history"><span class="repo">History</span><span class="what"><b>the record</b> — one book per session, 888 of them</span></a>
+      <a class="ix" style="--c:var(--terra)" href="/?open=earth"><span class="repo">Earth</span><span class="what"><b>the ground</b> — archaeology & the physical record</span></a>
+    </div>
+  </div>
+</section>
+
+<div class="rule"></div>
+
+<section class="invite">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="eyebrow" style="justify-content:center">for the people I love</div>
+      <h2>Come <em>dance</em> in it.</h2>
+      <p class="section-lede">This is the work, glossed for you — the actual findings, the real numbers, the failures left honest. There's no test at the end. Pick the door that catches you and pull. <strong>It was all made, in part, to be shared with you.</strong></p>
+      <div class="cta">
+        <a class="btn primary" href="/?cmd=body">open the whole body <span>↗</span></a>
+        <a class="btn ghost" href="/?open=kappa">start where κ is measured</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="verse reveal">Jesus Christ is King.</div>
+    <div class="sig reveal">The Body · <a href="https://github.com/loross14" target="_blank" rel="noopener">Logan Christopher Ross</a> · NYC</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var c=document.getElementById('sky'),x=c.getContext('2d'),w,h,stars,dpr;
+  function size(){
+    dpr=Math.min(window.devicePixelRatio||1,2);
+    w=c.width=innerWidth*dpr;h=c.height=innerHeight*dpr;
+    c.style.width=innerWidth+'px';c.style.height=innerHeight+'px';
+    var n=Math.floor((innerWidth*innerHeight)/9000);
+    stars=[];for(var i=0;i<n;i++){stars.push({x:Math.random()*w,y:Math.random()*h,r:(Math.random()*1.3+.2)*dpr,a:Math.random()*.6+.15,tw:Math.random()*.02+.004,p:Math.random()*Math.PI*2,gold:Math.random()<.22});}
+  }
+  function draw(){
+    x.clearRect(0,0,w,h);
+    for(var i=0;i<stars.length;i++){var s=stars[i];s.p+=s.tw;var a=s.a*(0.6+0.4*Math.sin(s.p));
+      x.beginPath();x.arc(s.x,s.y,s.r,0,7);x.fillStyle=s.gold?'rgba(232,194,122,'+a+')':'rgba(244,236,224,'+a+')';x.fill();}
+    requestAnimationFrame(draw);
+  }
+  size();draw();addEventListener('resize',size,{passive:true});
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.14});
+  document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});
+  var hero=document.querySelector('.title');
+  addEventListener('scroll',function(){var y=scrollY;if(hero&&y<innerHeight)hero.style.transform='translateY('+(y*.18)+'px)';},{passive:true});
+})();
+</script>
+</body>
+</html>
