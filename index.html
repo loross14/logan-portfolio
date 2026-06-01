@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Logan Christopher Ross</title>
+<meta name="description" content="Logan Christopher Ross — design, engineering, craft. A terminal hides behind a backtick." />
+<meta name="theme-color" content="#0a0a0a" />
+<meta property="og:title" content="Logan Christopher Ross" />
+<meta property="og:description" content="Design, engineering, craft. Press ` to begin." />
+<meta property="og:type" content="website" />
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap');
+
+  :root{
+    --bg:#0a0a0a;
+    --surface:#111111;
+    --border:#1e1e1e;
+    --ghost:#2a2a2a;
+    --muted:#555555;
+    --body:#888888;
+    --text:#b0b0b0;
+    --bright:#d4d0c8;
+    --white:#eae6de;
+    --accent:#c9a96e;
+    --red:#9B2335;
+    --green:#5a9a7a;
+    --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+    --serif:"Cormorant Garamond",Georgia,serif;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+
+  html,body{height:100%}
+  body{
+    background:var(--bg);
+    color:var(--body);
+    font-family:var(--mono);
+    font-weight:400;
+    line-height:1.6;
+    overflow:hidden;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+  ::selection{background:var(--accent);color:var(--bg)}
+  body.accent-mode ::selection{background:var(--red);color:var(--white)}
+
+  /* ---------- Cursor trail (z:9999) ---------- */
+  .trail{
+    position:fixed;
+    top:0;left:0;
+    width:8px;height:8px;
+    border-radius:50%;
+    background:var(--accent);
+    pointer-events:none;
+    z-index:9999;
+    opacity:0;
+    transform:translate(-50%,-50%);
+    will-change:transform,opacity;
+  }
+
+  /* ---------- Terminal overlay (z:9000) ---------- */
+  .terminal-overlay{
+    position:fixed;inset:0;
+    z-index:9000;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:rgba(5,5,5,.72);
+    backdrop-filter:blur(4px);
+    -webkit-backdrop-filter:blur(4px);
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .18s ease;
+  }
+  .terminal-overlay.open{opacity:1;pointer-events:auto}
+  .terminal-window{
+    width:680px;max-width:90vw;
+    height:440px;max-height:80vh;
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:8px;
+    box-shadow:0 24px 80px rgba(0,0,0,.6);
+    display:flex;flex-direction:column;
+    overflow:hidden;
+    transform:translateY(8px) scale(.99);
+    transition:transform .18s ease;
+  }
+  .terminal-overlay.open .terminal-window{transform:none}
+  .terminal-titlebar{
+    display:flex;align-items:center;gap:8px;
+    padding:11px 14px;
+    border-bottom:1px solid var(--border);
+    background:var(--bg);
+    user-select:none;
+  }
+  .dot{width:11px;height:11px;border-radius:50%}
+  .dot.r{background:var(--red)}
+  .dot.y{background:var(--accent)}
+  .dot.g{background:var(--green)}
+  .terminal-session{
+    margin-left:8px;
+    font-size:12px;
+    color:var(--muted);
+    letter-spacing:.02em;
+  }
+  .terminal-body{
+    flex:1;
+    padding:16px 18px;
+    overflow-y:auto;
+    font-size:13.5px;
+    line-height:1.7;
+  }
+  .terminal-body::-webkit-scrollbar{width:8px}
+  .terminal-body::-webkit-scrollbar-thumb{background:var(--ghost);border-radius:4px}
+  .out{color:var(--body);white-space:pre-wrap;word-break:break-word}
+  .out.green{color:var(--green)}
+  .out.accent{color:var(--accent)}
+  .out.bright{color:var(--bright)}
+  .terminal-inputline{
+    display:flex;align-items:center;gap:8px;
+    padding:12px 18px;
+    border-top:1px solid var(--border);
+    background:var(--bg);
+  }
+  .terminal-prompt{color:var(--green);font-weight:500;flex:none}
+  body.accent-mode .terminal-prompt{color:var(--accent)}
+  .terminal-input{
+    flex:1;
+    background:none;border:none;outline:none;
+    color:var(--text);
+    font-family:var(--mono);
+    font-size:13.5px;
+    caret-color:var(--accent);
+  }
+
+  /* ---------- Top bar (z:100) ---------- */
+  .topbar{
+    position:fixed;top:0;left:0;right:0;
+    height:40px;
+    z-index:100;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:0 22px;
+    background:rgba(10,10,10,.6);
+    backdrop-filter:blur(12px);
+    -webkit-backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--border);
+    font-size:12px;
+  }
+  .topbar-left{display:flex;align-items:center;gap:9px;color:var(--text)}
+  .status-dot{
+    width:7px;height:7px;border-radius:50%;
+    background:var(--green);
+    animation:pulse 3s ease-in-out infinite;
+  }
+  body.accent-mode .status-dot{background:var(--accent)}
+  .topbar-right{color:var(--muted)}
+  .topbar-right kbd{
+    font-family:var(--mono);
+    color:var(--bright);
+    border:1px solid var(--ghost);
+    border-radius:3px;
+    padding:1px 5px;
+    font-size:11px;
+  }
+
+  /* ---------- Hero (z:0) ---------- */
+  .hero{
+    height:100vh;
+    display:flex;flex-direction:column;
+    align-items:center;justify-content:center;
+    text-align:center;
+    padding:40px;
+    max-width:720px;
+    margin:0 auto;
+    position:relative;
+  }
+  .prompt-line{
+    font-size:13px;
+    color:var(--muted);
+    margin-bottom:22px;
+    letter-spacing:.04em;
+  }
+  .prompt-line .cursor{
+    display:inline-block;
+    width:8px;height:15px;
+    background:var(--accent);
+    margin-left:2px;
+    vertical-align:-2px;
+    animation:blink 1s step-end infinite;
+  }
+  .hero-name{
+    font-family:var(--serif);
+    font-weight:600;
+    font-size:clamp(2.8rem,6vw,4.2rem);
+    line-height:1.05;
+    color:var(--white);
+    letter-spacing:-.01em;
+    cursor:pointer;
+    margin-bottom:20px;
+    user-select:none;
+  }
+  .hero-name.glitch{animation:glitchText .3s steps(5,end)}
+  .hero-tagline{
+    font-size:15px;
+    color:var(--text);
+    max-width:520px;
+    line-height:1.75;
+    margin-bottom:30px;
+  }
+  .highlight{
+    color:var(--bright);
+    border-bottom:1px solid var(--ghost);
+    transition:border-color .2s ease,color .2s ease;
+  }
+  .highlight:hover{color:var(--white);border-bottom-color:var(--accent)}
+  .status-line{
+    display:flex;align-items:center;gap:18px;
+    flex-wrap:wrap;justify-content:center;
+    font-size:12px;
+    color:var(--muted);
+  }
+  .status-line .item{display:flex;align-items:center;gap:7px}
+  .status-line .d{width:6px;height:6px;border-radius:50%;background:var(--ghost)}
+  .status-line .d.on{background:var(--green);animation:pulse 3s ease-in-out infinite}
+  body.accent-mode .status-line .d.on{background:var(--accent)}
+  .status-line a{color:inherit;text-decoration:none;transition:color .2s ease}
+  .status-line a:hover{color:var(--bright)}
+
+  .cli-hint{
+    position:absolute;
+    bottom:34px;left:50%;
+    transform:translateX(-50%);
+    font-size:12px;color:var(--muted);
+    display:flex;align-items:center;gap:8px;
+    animation:drift 2.5s ease-in-out infinite;
+    transition:opacity .25s ease;
+  }
+  .cli-hint kbd{
+    font-family:var(--mono);
+    color:var(--bright);
+    border:1px solid var(--ghost);
+    border-radius:4px;
+    padding:2px 8px;
+    background:var(--surface);
+  }
+  .cli-hint.hidden{opacity:0;pointer-events:none}
+
+  /* ---------- Keyframes ---------- */
+  @keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+  @keyframes drift{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-6px)}}
+  @keyframes glitchText{
+    0%{transform:translate(0);filter:hue-rotate(0)}
+    20%{transform:translate(-2px,1px);filter:hue-rotate(90deg)}
+    40%{transform:translate(2px,-1px);filter:hue-rotate(180deg)}
+    60%{transform:translate(-1px,-1px);filter:hue-rotate(270deg)}
+    80%{transform:translate(1px,1px);filter:hue-rotate(360deg)}
+    100%{transform:translate(0);filter:hue-rotate(0)}
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width:640px){
+    .hero{padding:24px}
+    .topbar{padding:0 14px}
+    .status-line{gap:12px;flex-direction:column}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .status-dot,.status-line .d.on,.cli-hint,.prompt-line .cursor{animation:none}
+  }
+</style>
+</head>
+<body>
+
+  <!-- Terminal overlay -->
+  <div class="terminal-overlay" id="terminalOverlay">
+    <div class="terminal-window">
+      <div class="terminal-titlebar">
+        <span class="dot r"></span>
+        <span class="dot y"></span>
+        <span class="dot g"></span>
+        <span class="terminal-session">logan@ross — ~/portfolio</span>
+      </div>
+      <div class="terminal-body" id="terminalBody">
+        <div class="out accent">logan.sh — interactive shell</div>
+        <div class="out">Type <span style="color:var(--bright)">help</span> for a list of commands.</div>
+        <div class="out">&nbsp;</div>
+      </div>
+      <div class="terminal-inputline">
+        <span class="terminal-prompt">~/portfolio $</span>
+        <input class="terminal-input" id="terminalInput" autocomplete="off" autocapitalize="off" spellcheck="false" />
+      </div>
+    </div>
+  </div>
+
+  <!-- Top bar -->
+  <nav class="topbar">
+    <div class="topbar-left">
+      <span class="status-dot"></span>
+      <span>Logan Christopher Ross</span>
+    </div>
+    <div class="topbar-right">press <kbd>`</kbd> to begin</div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="prompt-line">~/portfolio<span class="cursor"></span></div>
+    <h1 class="hero-name" id="heroName">Logan&nbsp;Christopher&nbsp;Ross</h1>
+    <p class="hero-tagline">
+      Working at the seam of <span class="highlight">design</span>,
+      <span class="highlight">engineering</span>, and
+      <span class="highlight">craft</span> — building systems that
+      read the world to its honest ceiling.
+    </p>
+    <div class="status-line">
+      <span class="item"><span class="d on"></span> available for work</span>
+      <span class="item"><span class="d"></span> United States</span>
+      <span class="item"><span class="d"></span> <a href="mailto:logancross@live.com">logancross@live.com</a></span>
+    </div>
+    <div class="cli-hint" id="cliHint">
+      <kbd>`</kbd> open a terminal
+    </div>
+  </section>
+
+<script>
+  /* ===== Cursor trail (desktop only) ===== */
+  var isMobile = window.matchMedia('(hover: none)').matches;
+  var trails = [];
+  var mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
+  var isMoving = false, moveTimeout;
+
+  if (!isMobile) {
+    for (var i = 0; i < 5; i++) {
+      var el = document.createElement('div');
+      el.className = 'trail';
+      document.body.appendChild(el);
+      trails.push({ el: el, x: mouseX, y: mouseY });
+    }
+    document.addEventListener('mousemove', function (e) {
+      mouseX = e.clientX; mouseY = e.clientY;
+      isMoving = true;
+      clearTimeout(moveTimeout);
+      moveTimeout = setTimeout(function () { isMoving = false; }, 100);
+    });
+    requestAnimationFrame(animateTrails);
+  }
+
+  function animateTrails() {
+    for (var i = 0; i < trails.length; i++) {
+      var t = trails[i];
+      var tx = (i === 0) ? mouseX : trails[i - 1].x;
+      var ty = (i === 0) ? mouseY : trails[i - 1].y;
+      var speed = 0.15 - i * 0.02;           // 0.15 .. 0.07
+      t.x += (tx - t.x) * speed;
+      t.y += (ty - t.y) * speed;
+      var op = isMoving ? (0.3 - i * 0.06) : 0;
+      var scale = 1 - i * 0.15;
+      t.el.style.opacity = op;
+      t.el.style.transform = 'translate(' + t.x + 'px,' + t.y + 'px) translate(-50%,-50%) scale(' + scale + ')';
+    }
+    requestAnimationFrame(animateTrails);
+  }
+
+  /* ===== Terminal ===== */
+  var terminalOpen = false;
+  var terminalOverlay = document.getElementById('terminalOverlay');
+  var terminalInput = document.getElementById('terminalInput');
+  var terminalBody = document.getElementById('terminalBody');
+  var cliHint = document.getElementById('cliHint');
+  var heroName = document.getElementById('heroName');
+
+  function toggleTerminal() {
+    terminalOpen = !terminalOpen;
+    terminalOverlay.classList.toggle('open', terminalOpen);
+    if (terminalOpen) {
+      cliHint.classList.add('hidden');
+      setTimeout(function () { terminalInput.focus(); }, 100);
+    } else {
+      terminalInput.blur();
+    }
+  }
+
+  function addTerminalLine(text, cls) {
+    var div = document.createElement('div');
+    div.className = 'out' + (cls ? ' ' + cls : '');
+    div.textContent = text;
+    terminalBody.appendChild(div);
+    terminalBody.scrollTop = terminalBody.scrollHeight;
+  }
+
+  function processCommand(cmd) {
+    var commands = {
+      'help': function () {
+        addTerminalLine('Available commands:', 'bright');
+        addTerminalLine('  about     who I am');
+        addTerminalLine('  stack     what I build with');
+        addTerminalLine('  contact   how to reach me');
+        addTerminalLine('  theme     toggle the gold accent');
+        addTerminalLine('  clear     wipe the screen');
+        addTerminalLine('  exit      close the terminal');
+        addTerminalLine('  secret    ?', 'accent');
+      },
+      'about': function () {
+        addTerminalLine('Logan Christopher Ross', 'bright');
+        addTerminalLine('Designer + engineer, United States.');
+        addTerminalLine('I build systems at the seam of interface, language, and proof.');
+        addTerminalLine('Interests: type, terminals, signal, the honest ceiling of a thing.');
+      },
+      'stack': function () {
+        addTerminalLine('Languages   TypeScript · Python · Rust · bash');
+        addTerminalLine('Frontend    React · Next.js · vanilla DOM · CSS');
+        addTerminalLine('Design      systems · type · motion · single-file craft');
+        addTerminalLine('Audio       synthesis · DSP · field recording');
+        addTerminalLine('Other       git · vercel · the command line');
+      },
+      'contact': function () {
+        addTerminalLine('logancross@live.com', 'accent');
+        addTerminalLine('github.com/loross14');
+      },
+      'theme': function () {
+        document.body.classList.toggle('accent-mode');
+        var on = document.body.classList.contains('accent-mode');
+        addTerminalLine('accent-mode ' + (on ? 'on' : 'off') + '.', 'green');
+      },
+      'clear': function () {
+        terminalBody.innerHTML = '';
+        addTerminalLine('Terminal cleared.', 'green');
+      },
+      'exit': function () { toggleTerminal(); },
+      'secret': function () {
+        addTerminalLine(' ');
+        addTerminalLine('"The details are not the details. They make the design."', 'accent');
+        addTerminalLine('  — Charles Eames', 'muted');
+        addTerminalLine(' ');
+        addTerminalLine('You found 1 of 3 easter eggs.', 'green');
+      },
+      'konami': function () {
+        document.body.classList.add('accent-mode');
+        addTerminalLine('Cheat code accepted.', 'green');
+      },
+      'sudo rm -rf /': function () {
+        addTerminalLine('Nice try.', 'accent');
+      }
+    };
+
+    var fn = commands[cmd];
+    if (fn) { fn(); }
+    else {
+      addTerminalLine('command not found: ' + cmd);
+      addTerminalLine("type 'help' for a list of commands.", 'muted');
+    }
+  }
+
+  /* global keydown: open/close terminal */
+  document.addEventListener('keydown', function (e) {
+    if ((e.key === '`' || e.key === '~') && e.target !== terminalInput) {
+      e.preventDefault();
+      toggleTerminal();
+      return;
+    }
+    if (e.key === 'Escape' && terminalOpen) { toggleTerminal(); }
+  });
+
+  /* input keydown: run command on Enter */
+  terminalInput.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') {
+      var val = terminalInput.value.trim();
+      terminalInput.value = '';
+      if (!val) return;
+      addTerminalLine('~/portfolio $ ' + val, 'bright');
+      processCommand(val.toLowerCase());
+    }
+  });
+
+  /* ===== Easter egg: triple-click glitch ===== */
+  var clickCount = 0, clickTimer;
+  heroName.addEventListener('click', function () {
+    clickCount++;
+    clearTimeout(clickTimer);
+    clickTimer = setTimeout(function () { clickCount = 0; }, 500);
+    if (clickCount >= 3) {
+      heroName.classList.add('glitch');
+      setTimeout(function () { heroName.classList.remove('glitch'); }, 300);
+      clickCount = 0;
+    }
+  });
+
+  /* ===== Easter egg: Konami code ===== */
+  var konamiSequence = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+  var konamiIndex = 0;
+  document.addEventListener('keydown', function (e) {
+    if (terminalOpen) return;
+    var key = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+    if (key === konamiSequence[konamiIndex]) {
+      konamiIndex++;
+      if (konamiIndex === konamiSequence.length) {
+        document.body.classList.add('accent-mode');
+        heroName.classList.add('glitch');
+        setTimeout(function () { heroName.classList.remove('glitch'); }, 300);
+        konamiIndex = 0;
+      }
+    } else {
+      konamiIndex = 0;
+    }
+  });
+</script>
+</body>
+</html>
